@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phishing Awareness App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #0275d8;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    p {
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+    .highlight {
+      color: #d9534f;
+      font-weight: bold;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #0275d8;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    button:hover {
+      background-color: #025aa5;
+    }
+  </style>
+</head>
+<body>
+  <header>Welcome to Phishing Awareness</header>
+  <div class="container" id="content">
+    <!-- Content will be loaded dynamically -->
+  </div>
+
+  <script>
+    const pages = [
+      {
+        title: "What is Phishing?",
+        content: `<p>Phishing is a cyberattack that tricks individuals into sharing sensitive information, such as passwords or credit card numbers, by pretending to be a trustworthy entity.</p>
+                  <p>It often involves fraudulent emails or websites designed to look legitimate.</p>
+                  <button onclick="goToPage(1)">Learn More</button>`
+      },
+      {
+        title: "Risk Mitigation",
+        content: `<h2>Risk Mitigation</h2>
+                  <p>Risk mitigation involves strategies to reduce the likelihood or impact of phishing attacks. Key examples include:</p>
+                  <ul>
+                    <li><b>Email Filters:</b> Use spam filters to detect and block suspicious emails.</li>
+                    <li><b>Multi-Factor Authentication (MFA):</b> Add an extra layer of security to sensitive accounts.</li>
+                    <li><b>Employee Training:</b> Regularly educate staff about recognizing phishing attempts.</li>
+                  </ul>
+                  <div class="nav-buttons">
+                    <button onclick="goToPage(0)">Back</button>
+                    <button onclick="goToPage(2)">Next</button>
+                  </div>`
+      },
+      {
+        title: "How Security Policies Reduce Risk",
+        content: `<h2>Security Policies</h2>
+                  <p>Security policies establish guidelines to prevent phishing and other cyber threats:</p>
+                  <ul>
+                    <li><b>Strong Passwords:</b> Require long, complex passwords and regular updates.</li>
+                    <li><b>Access Control:</b> Limit access to sensitive systems to authorized personnel only.</li>
+                    <li><b>Incident Response Plans:</b> Prepare procedures for responding to phishing incidents.</li>
+                  </ul>
+                  <div class="nav-buttons">
+                    <button onclick="goToPage(1)">Back</button>
+                    <button onclick="goToPage(3)">Next</button>
+                  </div>`
+      },
+      {
+        title: "Performing Vulnerability Assessments",
+        content: `<h2>Vulnerability Assessments</h2>
+                  <p>Vulnerability assessments help identify weaknesses in your organization’s security. Steps include:</p>
+                  <ol>
+                    <li><b>Simulate Phishing Attacks:</b> Test employee awareness by sending mock phishing emails.</li>
+                    <li><b>Review System Logs:</b> Identify unusual access attempts or patterns.</li>
+                    <li><b>Use Vulnerability Scanners:</b> Detect outdated software or insecure systems.</li>
+                  </ol>
+                  <p><b>How to Use Results:</b> Address identified issues by updating software, improving training, and refining security policies.</p>
+                  <div class="nav-buttons">
+                    <button onclick="goToPage(2)">Back</button>
+                    <button onclick="goToPage(4)">Next</button>
+                  </div>`
+      },
+      {
+        title: "Recognizing Phishing Emails",
+        content: `<h2>How to Spot Phishing Emails</h2>
+                  <p>Signs of a phishing email include:</p>
+                  <ul>
+                    <li>A sense of urgency, such as "Act now or your account will be suspended!"</li>
+                    <li>Unexpected attachments or links.</li>
+                    <li>Spelling and grammar mistakes.</li>
+                    <li>Suspicious sender addresses.</li>
+                  </ul>
+                  <p>Before clicking a link, hover over it to check if the URL matches the claimed destination.</p>
+                  <div class="nav-buttons">
+                    <button onclick="goToPage(3)">Back</button>
+                    <button onclick="goToPage(5)">Next</button>
+                  </div>`
+      },
+      {
+        title: "Interactive Quiz",
+        content: `<h2>Interactive Quiz</h2>
+                  <p>Test your ability to recognize phishing attempts:</p>
+                  <p id="question1">1. An email claims you’ve won a prize. It includes a link to a website but has grammar mistakes and an unusual sender address.</p>
+                  <button onclick="checkAnswer(1, true)">Phishing Attempt</button>
+                  <button onclick="checkAnswer(1, false)">Legitimate</button>
+                  <p id="result1"></p>
+
+                  <p id="question2">2. A message from your colleague contains a link to a shared document using your company’s official platform.</p>
+                  <button onclick="checkAnswer(2, false)">Phishing Attempt</button>
+                  <button onclick="checkAnswer(2, true)">Legitimate</button>
+                  <p id="result2"></p>
+
+                  <p id="question3">3. You receive an email from IT support to reset your password. The link looks legitimate but redirects to <span class='highlight'>https://secure-reset.example-123.com</span>.</p>
+                  <button onclick="checkAnswer(3, true)">Phishing Attempt</button>
+                  <button onclick="checkAnswer(3, false)">Legitimate</button>
+                  <p id="result3"></p>
+
+                  <div class="nav-buttons">
+                    <button onclick="goToPage(4)">Back</button>
+                  </div>`
+      }
+    ];
+
+    function goToPage(pageIndex) {
+      const container = document.getElementById('content');
+      container.innerHTML = `<h1>${pages[pageIndex].title}</h1>${pages[pageIndex].content}`;
+    }
+
+    function checkAnswer(questionNumber, isPhish) {
+      const resultElement = document.getElementById(`result${questionNumber}`);
+      let correctAnswer;
+
+      if (questionNumber === 1) {
+        correctAnswer = true;
+      } else if (questionNumber === 2) {
+        correctAnswer = false;
+      } else if (questionNumber === 3) {
+        correctAnswer = true;
+      }
+
+      if (isPhish === correctAnswer) {
+        resultElement.textContent = 'Correct!';
+        resultElement.style.color = 'green';
+      } else {
+        resultElement.textContent = 'Incorrect. Review the signs of phishing emails.';
+        resultElement.style.color = 'red';
+      }
+    }
+
+    
+    goToPage(0);
+  </script>
+</body>
+</html>
